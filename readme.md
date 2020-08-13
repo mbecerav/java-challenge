@@ -35,3 +35,18 @@ Application (with the embedded H2 database) is ready to be used ! You can access
 - Appropriate usage of packages
 - Is the application running as expected
 - No performance issues
+
+
+
+//Fix the version and installation of Lombock to be abel to work with the Lombock's code on entities (data visualization issues on Swagger). Fixed
+
+//Fix Add Method: 
+
+    //Add parameters (Make the data required) to the "Add employee" POST method" to create records with data and not create void records. Fixed
+
+    //Fix Add Method: Add input of parameters and validate it (Make the data required) to the "Add employee" POST method" to prevent null records. Fixed
+
+//Fix Put Method: 
+
+    //While trying to update a record, app is creating a new registry with null values and just setting the "Update" value (when ID is not sended on body). Fixed
+

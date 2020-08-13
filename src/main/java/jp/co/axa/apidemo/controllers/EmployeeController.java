@@ -17,11 +17,10 @@ public class EmployeeController {
     public void setEmployeeService(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
-
+    
     @GetMapping("/employees")
     public List<Employee> getEmployees() {
-        List<Employee> employees = employeeService.retrieveEmployees();
-        return employees;
+        return employeeService.retrieveEmployees();
     }
 
     @GetMapping("/employees/{employeeId}")
@@ -30,9 +29,17 @@ public class EmployeeController {
     }
 
     @PostMapping("/employees")
-    public void saveEmployee(Employee employee){
-        employeeService.saveEmployee(employee);
+    public String saveEmployee(@RequestBody Employee employee){
+        //Validate the data to prevent NULL records
+        if(employee.getDepartment() == null || employee.getName() == null
+        		|| employee.getSalary() == null)
+        	return "Check the correct structure of the data";
+        
+        else {
+        	employeeService.saveEmployee(employee);
         System.out.println("Employee Saved Successfully");
+        return "Employee Saved Successfully";
+        }
     }
 
     @DeleteMapping("/employees/{employeeId}")
@@ -46,6 +53,20 @@ public class EmployeeController {
                                @PathVariable(name="employeeId")Long employeeId){
         Employee emp = employeeService.getEmployee(employeeId);
         if(emp != null){
+        	//Set ID from request to Update the requested record
+        	//and not create a new record (if Id is not sended on body)
+        	employee.setId(employeeId);
+        	
+        	//check modifications to build the new object to update
+        	if (employee.getDepartment()==null)
+        		employee.setDepartment(emp.getDepartment());
+        	
+        	if (employee.getName()==null)
+        		employee.setName(emp.getName());
+        	
+        	if (employee.getSalary()==null)
+        		employee.setSalary(emp.getSalary());
+        	
             employeeService.updateEmployee(employee);
         }
 
