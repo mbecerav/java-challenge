@@ -41,34 +41,49 @@ public class EmployeeController {
         return "Employee Saved Successfully";
         }
     }
-
+    
+    //Add a descriptive response for the user
     @DeleteMapping("/employees/{employeeId}")
-    public void deleteEmployee(@PathVariable(name="employeeId")Long employeeId){
-        employeeService.deleteEmployee(employeeId);
-        System.out.println("Employee Deleted Successfully");
+    public String deleteEmployee(@PathVariable(name="employeeId")Long employeeId){
+        try {
+        	employeeService.deleteEmployee(employeeId);
+        }
+        catch(Error e) {
+        	System.out.println("Error: "+e);
+        	return "Error: "+e;
+        }
+    	System.out.println("Employee Deleted Successfully");
+    	return "Employee Deleted Successfully";
     }
 
     @PutMapping("/employees/{employeeId}")
-    public void updateEmployee(@RequestBody Employee employee,
+    public String updateEmployee(@RequestBody Employee employee,
                                @PathVariable(name="employeeId")Long employeeId){
         Employee emp = employeeService.getEmployee(employeeId);
-        if(emp != null){
-        	//Set ID from request to Update the requested record
-        	//and not create a new record (if Id is not sended on body)
-        	employee.setId(employeeId);
-        	
-        	//check modifications to build the new object to update
-        	if (employee.getDepartment()==null)
-        		employee.setDepartment(emp.getDepartment());
-        	
-        	if (employee.getName()==null)
-        		employee.setName(emp.getName());
-        	
-        	if (employee.getSalary()==null)
-        		employee.setSalary(emp.getSalary());
-        	
-            employeeService.updateEmployee(employee);
+        
+        if(emp.getId()!=null) {
+        
+	        if(emp != null){
+	        	//Set ID from request to Update the requested record
+	        	//and not create a new record (if Id is not sended on body)
+	        	employee.setId(employeeId);
+	        	
+	        	//check modifications to build the new object to update
+	        	if (employee.getDepartment()==null)
+	        		employee.setDepartment(emp.getDepartment());
+	        	
+	        	if (employee.getName()==null)
+	        		employee.setName(emp.getName());
+	        	
+	        	if (employee.getSalary()==null)
+	        		employee.setSalary(emp.getSalary());
+	        	
+	            employeeService.updateEmployee(employee);
+	        }
+	        return "Employee Updated Successfully";
         }
+        else
+        	return "The Employee with ID "+ employeeId +" does not exist!";
 
     }
 

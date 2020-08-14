@@ -37,16 +37,39 @@ Application (with the embedded H2 database) is ready to be used ! You can access
 - No performance issues
 
 
+> ==============================================================
 
-//Fix the version and installation of Lombock to be abel to work with the Lombock's code on entities (data visualization issues on Swagger). Fixed
+#### Changes
 
-//Fix Add Method: 
+- Fix Lombock version:
+  - Issue: In some machines, Lombok may have update/linking failures or inconsistencies with the current syntax, which does not allow displaying models or returning information with formatting to the Swagger view.
+  - Fix: Update, re-link the version and installation of Lombock to be abel to work with the Lombock's code on entities (data/models visualization issues on Swagger). 
 
-    //Add parameters (Make the data required) to the "Add employee" POST method" to create records with data and not create void records. Fixed
+- Fix Add Method:
+  - Issue: Post Method allows to send empty requests, in fact does not require data and creates null records.
+  - Fix: Add input of parameters and validate it (Make the data required) to the "Add employee" POST method" to prevent null records. 
 
-    //Fix Add Method: Add input of parameters and validate it (Make the data required) to the "Add employee" POST method" to prevent null records. Fixed
+- Fix Put Method:
+  - Issue: While trying to update a record, app is creating a new registry with null values and just setting the "Update" value (when ID is not sended on body). 
+  - Fix: Link the object to the requested ID.
+  - Fix: Validate only the submitted change data and concatenate it with the current information to correctly build the object and send it to the update method.
+  
+  - Add a descriptive response for the users on the "void return" features.
 
-//Fix Put Method: 
+#### Annotations
 
-    //While trying to update a record, app is creating a new registry with null values and just setting the "Update" value (when ID is not sended on body). Fixed
+- The application has a general correct operation, so for the development of new features is necessary to know the final objective of the same and the requirements from the client.
 
+- The fixes were implemented in a simple and self-descriptive way in the code. Keep it simple, easy to understand.
+
+#### Pending
+
+- Add unit tests.
+
+- Add the features required by the client.
+
+- Build a user-friendly UI
+
+- Add a changes confirmation request.
+
+- Organize better the code responses with Try Catch.
